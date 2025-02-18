@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UpgrateLoginScreen;
+export default Validateform;
