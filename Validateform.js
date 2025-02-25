@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   View,
   Text,
@@ -8,12 +10,19 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
-const UpgrateLoginScreen = () => {
+const Validateform = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})$/;
+
   const handleValidate = (phone) => {
-    phoneRegex.test(phone) ? alert('Số điện thoại hợp lệ!') : alert('Số điện thoại không hợp lệ!')
+    if (phoneRegex.test(phone)) {
+      alert('Số điện thoại hợp lệ!');
+      navigation.navigate('Details');
+    } else {
+      alert('Số điện thoại không hợp lệ!');
+    }
   };
+  
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -32,15 +41,34 @@ const UpgrateLoginScreen = () => {
       />
 
       <TouchableOpacity
-        style={[
-          styles.button,
-          { backgroundColor: phoneNumber ? "#007BFF" : "#ccc" },
-        ]}
-        onPress={() =>handleValidate(phoneNumber)}
+        style={[styles.button, { backgroundColor: phoneNumber ? "#007BFF" : "#ccc" }]}
+        onPress={() => handleValidate(phoneNumber)}
       >
         <Text style={styles.buttonText}>Kiểm tra</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+
+          </KeyboardAvoidingView>
+        );
+};
+
+const Homemain = () => {
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>Home Tôn Văn Diện</Text>
+    </View>
+  );
+};
+
+const Stack = createNativeStackNavigator();
+
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Validateform} />
+        <Stack.Screen name="Details" component={Homemain} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -79,6 +107,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
+  screen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
-export default Validateform;
+export default AppNavigator;
